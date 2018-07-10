@@ -60,3 +60,20 @@ cor(reclamacoes$mediana, reclamacoes$numero.de.capslock)
 ggplot(avaliacoes, aes(x = `Grau de insatisfação`)) + geom_bar()
 ```
 
+## Dos dois órgãos apresentados, como estão distribuidas as avaliações com grau maximo de insatisfação?
+
+A partir daqui, iremos alterar um pouco a frame de avaliações para facilitar a análise
+```{r}
+avaliacoes <- avaliacoes %>% select(id = `ID da reclamação`, 
+         insatisfacao = `Grau de insatisfação`)
+```
+
+Agora, observe o plot abaixo
+```{r}
+avaliacoes %>% group_by(id) %>% filter(insatisfacao >= 5) %>% inner_join(reclamacoes, by = "id") %>% ggplot(aes(fill = orgao, x = reclamacao.length), na.rm = TRUE) + 
+geom_histogram(binwidth = 60, na.rm = TRUE) + facet_grid(orgao ~ .)
+```
+
+Podemos observar dados interessantes. Das avaliações com grau 5, vemos que a maior delas pertence à ANAC. Também podemos ver que o INSS possui 24 reclamações de grau 5, enquanto a ANAC possui 42.
+
+
