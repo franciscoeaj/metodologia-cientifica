@@ -130,6 +130,27 @@ reclamacoes_tratado = reclamacoes_l %>% select(insatisfacao, avaliadores, range.
 ggpairs(reclamacoes_tratado)
 # lm1 = lm(<seu modelo>)
 ```
+```{r}
+model <- lm(formula = erro ~ lexico.dummy, data = reclamacoes_tratado)
+summary(model)
+#plot(model)
+```
+
+
+O que podemos observar com este modelo: 
+
+* Quando o léxico for 0, ou seja, op30, o erro aproximado é de 2.48 pontos. E ele cresce em 1.5167 quando utilizamos o léxico sent.
+ 
+* Observando o desvio padrão, podemos concluir que quando o lexico utilizado for o op30, os erros podem variar em 0,6039 pontos
+ 
+* Observando o p-valor, concluímos que, com um valores bem próximos de 0, tanto para o intercept, quanto para o slope, temos p-valores com grande significância, e com isso podemos rejeitar a hipótese nula e constatar que há uma relação entre o erro e o léxico.
+ 
+* Neste modelo, obtivemos um R² de 0.05074. Isso significa que apenas 5% dos erros obtidos são explicados pelo léxico escolhido.
+
+```{r}
+predict(model, reclamacoes_tratado, interval = "confidence")
+```
+
 
 **Dica** - o texto de resultado que queremos produzir é algo como: 
 
