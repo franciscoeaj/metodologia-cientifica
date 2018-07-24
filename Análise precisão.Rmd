@@ -22,6 +22,8 @@ library(broom)
 library(GGally)
 
 theme_set(theme_bw())
+
+set.seed(1456)
 ```
 
 ## Os dados
@@ -60,7 +62,7 @@ calcular_polaridade_normalizada <- function (polaridade) {
      LIKERT_RANGE = 5
      
      # F(num) = likert - int([num + |min|] / likert) 
-     normalize_function = LIKERT_RANGE - (as.integer((polaridade + abs(WORST_SENTIMENT)) / LIKERT_RANGE))
+     normalize_function = LIKERT_RANGE - (as.integer((polaridade + abs(WORST_SENTIMENT)) / ((BEST_SENTIMENT + abs(WORST_SENTIMENT))/4)))
      
      return (normalize_function)
  }
