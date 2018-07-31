@@ -153,6 +153,16 @@ O que podemos observar com este modelo:
 predict(model, reclamacoes_tratado, interval = "confidence")
 ```
 
+```{r}
+sm <- summary(model)
+
+mse <- mean(sm$residuals^2)
+
+rmse <- sqrt(mse)
+
+print(rmse)
+```
+
 
 **Dica** - o texto de resultado que queremos produzir é algo como: 
 

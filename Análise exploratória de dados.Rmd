@@ -44,7 +44,7 @@ reclamacoes$numero.de.capslock <- str_count(reclamacoes$reclamacao, "\\b[A-Z]{2,
 
 ## H? alguma rela??o entre o n?vel de instatisfa??o geral das reclama??es e o n?mero de palavras em caixa alta presentes nelas?
 ```{r}
-ggplot(reclamacoes, aes(x=mediana, y=numero.de.capslock)) + geom_point()
+ggplot(reclamacoes, aes(x=mediana, y=numero.de.capslock)) + geom_point() + labs(x="Grau de insatisfação geral", y="Quantidade de palavras em caixa alta")
 ```
 
 Com este plot, percebemos h? pouca rela??o entre as duas vari?veis. A reclama??o com maior n?mero de palavras em caixa alta, tem o menor n?vel de instatisfa??o geral baixa, enquanto que h? reclama??es com poucas ou nenhuma palavra em caixa alta que possuem o maior n?vel de insatisfa??o geral. Isso se confirma dado o baixo coeficiente de correla??o entre as duas variaveis:
@@ -57,23 +57,26 @@ cor(reclamacoes$mediana, reclamacoes$numero.de.capslock)
 ## Das avalia??es realzadas, quantas foram feitas para cada n?vel de insatisfa??o?
 
 ```{r}
-ggplot(avaliacoes, aes(x = `Grau de insatisfaÃ§Ã£o`)) + geom_bar()
+ggplot(avaliacoes, aes(x = `Grau de insatisfação`)) + geom_bar(width = 0.5) + labs(title = "Avaliações por grau de insatisfação", x="Grau de insatisfação", y="Quantidade de avaliações")
 ```
 
 ## Dos dois Ã³rgÃ£os apresentados, como estÃ£o distribuidas as avaliaÃ§Ãµes com grau maximo de insatisfaÃ§Ã£o?
 
 A partir daqui, iremos alterar um pouco a frame de avaliaÃ§Ãµes para facilitar a anÃ¡lise
 ```{r}
-avaliacoes <- avaliacoes %>% select(id = `ID da reclamaÃ§Ã£o`, 
-         insatisfacao = `Grau de insatisfaÃ§Ã£o`)
+avaliacoes <- avaliacoes %>% select(id = `ID da reclamação`, 
+         insatisfacao = `Grau de insatisfação`)
 ```
 
 Agora, observe o plot abaixo
 ```{r}
-avaliacoes %>% group_by(id) %>% filter(insatisfacao >= 5) %>% inner_join(reclamacoes, by = "id") %>% ggplot(aes(fill = orgao, x = reclamacao.length), na.rm = TRUE) + 
-geom_histogram(binwidth = 60, na.rm = TRUE) + facet_grid(orgao ~ .)
+avaliacoes %>% group_by(id)  %>% inner_join(reclamacoes, by = "id") %>% filter(insatisfacao >= 5) %>% ggplot(aes(x=orgao)) + geom_bar(width = 0.5) + labs(title = "Avaliações de nível máximo por órgão", x="Órgão", y="Quantidade de avaliações")
 ```
 
 Podemos observar dados interessantes. Das avaliaÃ§Ãµes com grau 5, vemos que a maior delas pertence Ã  ANAC. TambÃ©m podemos ver que o INSS possui 24 reclamaÃ§Ãµes de grau 5, enquanto a ANAC possui 42.
 
+```{r}
+avaliacoes %>% group_by(id) %>% filter(insatisfacao >=  %>% inner_join(reclamacoes, by = "id") %>% ggplot(aes(fill = orgao, x = numero.de.capslock), na.rm = TRUE) + 
+geom_histogram(binwidth = 0.5, na.rm = TRUE) + facet_grid(orgao ~ .) + labs(x="Quantidade de palavras em caixa alta", y="Quantidade de avaliações", title="Avaliações de nível máximo em caixa alta por órgão")
+```
 
